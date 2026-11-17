@@ -1,0 +1,13 @@
+{
+  "name": "cueclerk-claude",
+  "owner": {
+    "name": "ShirasaMachi"
+  },
+  "plugins": [
+    {
+      "name": "cueclerk",
+      "source": "./plugin",
+      "description": "Clarify vague requests and improve prompts while preserving intent. Get refined prompts or confirm one before execution."
+    }
+  ]
+}

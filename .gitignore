@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+dist/
+.DS_Store
+Thumbs.db
+preferences.json
+tasks/
+*.log
+.cueclerk-install.json

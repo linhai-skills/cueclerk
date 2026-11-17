@@ -1,0 +1,9 @@
+{
+  "name": "cueclerk",
+  "version": "1.0.0",
+  "description": "Clarify vague requests and improve prompts while preserving intent. Get refined prompts or confirm one before execution.",
+  "author": {
+    "name": "ShirasaMachi"
+  },
+  "license": "MIT"
+}

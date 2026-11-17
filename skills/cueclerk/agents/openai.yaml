@@ -1,0 +1,4 @@
+interface:
+  display_name: "CueClerk"
+  short_description: "Clarify vague requests and improve prompts"
+  default_prompt: "Use $cueclerk to clarify and improve my task prompt."
