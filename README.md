@@ -3,7 +3,8 @@
 Your prompt-refinement secretary. **v1.0.0**
 
 CueClerk clarifies vague requests and polishes prompts while preserving your intent. Get the rewritten prompt directly, or choose from **1–4 useful options**
-and have the selected task carried out without another confirmation. Each option
+and continue with the selected task without repeating prompt selection, subject to
+the host's permission requirements. Each option
 has a title and full prompt. Native choices are used when available; long prompts
 use text.
 
@@ -14,7 +15,7 @@ before proceeding. A short but clear request does not need this extra step.
 ## Install
 
 Download your platform's ZIP from the [latest release](https://github.com/linhai-skills/cueclerk/releases/latest).
-This repository is **private**: sign in with access, or ask the owner to share the ZIP.
+Downloads are public; no GitHub account or repository access is required.
 No GitHub CLI is required. Extract to a permanent folder before installing a local plugin.
 
 | Platform | Download | Install |
@@ -23,6 +24,11 @@ No GitHub CLI is required. Extract to a permanent folder before installing a loc
 | Claude Code | `cueclerk-claude-code-1.0.0.zip` | Extract, then run the Claude commands below. |
 | DeepSeek Harness | `cueclerk-deepseek-harness-1.0.0.zip` | Extract `cueclerk` into `~/.dsh/skills/` (or `$DSH_HOME/skills/`). |
 | WorkBuddy | `cueclerk-workbuddy-1.0.0.zip` | Open **Skills → Add Skill → Upload Skill** and select the ZIP. |
+
+**Validation scope:** v1.0.0 has been checked for skill format, package contents and
+local Codex installation. Model-conversation tests were not run for this release;
+end-to-end behavior across clients and native compaction remain unverified.
+Native selection controls and compaction depend on the host's exposed capabilities.
 
 **Codex** — replace the path with your extracted folder:
 
@@ -81,7 +87,4 @@ execution. Selection widgets and compaction depend on each host's actual capabil
 Preferences stay in the conversation only. See [SKILL.md](skills/cueclerk/SKILL.md)
 for the shared workflow.
 
-Validation covers skill format, package contents and local Codex installation.
-Model-conversation tests were not run for v1.0.0. Native compaction and behavior
-across clients remain unverified.
 [MIT license](LICENSE).

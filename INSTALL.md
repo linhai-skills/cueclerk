@@ -10,8 +10,8 @@ ask only when these cannot be inferred. Do not install into every platform by de
    [DeepSeek Harness](harnesses/deepseek-harness/INSTALL.md), or
    [WorkBuddy](harnesses/workbuddy/INSTALL.md).
 2. Use a local checkout of [linhai-skills/cueclerk](https://github.com/linhai-skills/cueclerk)
-   or its [release ZIP](https://github.com/linhai-skills/cueclerk/releases/latest). The repository is private;
-   use existing authorized access, or ask for the ZIP/access without requesting tokens.
+   or its [release ZIP](https://github.com/linhai-skills/cueclerk/releases/latest).
+   Public downloads require no GitHub account or repository credentials.
 3. Inspect existing CueClerk skills/plugins first. Choose one installation route.
    Preserve custom edits. Before replacing an existing skill,
    back it up outside all skill-discovery directories; never delete other skills.
