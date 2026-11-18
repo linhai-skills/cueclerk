@@ -25,10 +25,15 @@ No GitHub CLI is required. Extract to a permanent folder before installing a loc
 | DeepSeek Harness | `cueclerk-deepseek-harness-1.0.0.zip` | Extract `cueclerk` into `~/.dsh/skills/` (or `$DSH_HOME/skills/`). |
 | WorkBuddy | `cueclerk-workbuddy-1.0.0.zip` | Open **Skills → Add Skill → Upload Skill** and select the ZIP. |
 
-**Validation scope:** v1.0.0 has been checked for skill format, package contents and
-local Codex installation. Model-conversation tests were not run for this release;
-end-to-end behavior across clients and native compaction remain unverified.
-Native selection controls and compaction depend on the host's exposed capabilities.
+**Validation scope:** checks cover skill format, packages, local Codex installation,
+simulated compaction/continuation events, and read-only App Server access on Codex
+CLI 0.167.0. Live model compaction, automatic model continuation and behavior across
+clients have not been tested. Native selection controls depend on the host.
+
+**Codex automatic compaction:** the Codex package includes an adapter for an existing
+App Server Unix control socket. It needs Python 3.10+ on the Codex host and permission
+to access that socket. Clients without this interface continue without compaction
+unless they expose a native compaction tool. See the [Codex guide](harnesses/codex/INSTALL.md).
 
 **Codex** — replace the path with your extracted folder:
 
@@ -47,10 +52,13 @@ claude plugin install cueclerk@cueclerk-claude
 Start a new session. In Claude Code, use `/cueclerk:cueclerk <request>`.
 In Codex, select the CueClerk plugin/skill; in DeepSeek Harness or WorkBuddy, ask
 "Use CueClerk to refine this request: ...". `~` means your user home directory.
-No Python runtime or helper scripts are required.
+Prompt refinement itself requires no Python. Only the Codex compaction adapter uses it.
 
 **Skill-only alternative:** extract `cueclerk-1.0.0.zip` into `~/.agents/skills/`
 for Codex or `~/.claude/skills/` for Claude Code. Invoke `$cueclerk` or `/cueclerk`.
+This portable ZIP uses host-exposed compaction tools only. For Codex's socket adapter
+without plugin installation, copy the complete `plugin/skills/cueclerk` folder from
+the Codex ZIP plus its license into `~/.agents/skills/cueclerk` instead.
 Use either the plugin or standalone skill to avoid duplicate entries. Back up the
 old skill outside discovery directories before replacing it.
 
@@ -70,10 +78,11 @@ It will use the matching platform guide and report what was actually installed.
 | [harnesses/workbuddy](harnesses/workbuddy/INSTALL.md) | Uploadable skill bundle |
 
 The last two use documented skill loading, not an invented plugin manifest.
-The same platform-neutral rules are maintained in `skills/cueclerk`; platform
-copies are synchronized for self-contained installation. Platform differences are
-limited to packaging, discovery metadata and installation. Only Codex includes
-`agents/openai.yaml`. The root license is added to each release package.
+Platform-neutral rules live in `skills/cueclerk` and are copied to Claude Code,
+DeepSeek Harness and WorkBuddy. The Codex skill preserves the shared refinement
+workflow and adds its own compaction reference and Python adapter. Keep that
+platform-specific section when updating shared rules. The root license is added
+to each release package.
 
 ## Use and preferences
 
@@ -81,10 +90,16 @@ Choose an option, type its number, or add edits. Say "Skip refinement"
 to execute your current request as given. `no compact` disables compaction for the current conversation;
 `enable compact` re-enables it. New conversations default to enabled. A switch alone
 does not choose a prompt. `cancel` stops the workflow.
-Compaction requires an exposed host function; unavailable compaction does not block
-execution. Selection widgets and compaction depend on each host's actual capabilities.
+Each confirmed task gets at most one automatic compaction attempt. Codex can queue
+compaction after the confirming turn ends and continue the task in the same thread.
+The continuation skips further compaction and prompt confirmation. Other platforms
+use their own callable native interfaces. If none is available, CueClerk reports
+that compaction did not occur and continues; a written summary is not compaction.
 
-Preferences stay in the conversation only. See [SKILL.md](skills/cueclerk/SKILL.md)
-for the shared workflow.
+Preferences stay in the conversation only. The Codex adapter temporarily saves the
+confirmed task outside the plugin and keeps a small receipt to prevent duplicates.
+See [SKILL.md](skills/cueclerk/SKILL.md) for the shared workflow and
+[Codex compaction](harnesses/codex/plugin/skills/cueclerk/references/compaction.md)
+for requirements, cancellation and failure handling.
 
 [MIT license](LICENSE).

@@ -69,7 +69,15 @@ Default to enabled in each new conversation. `no compact` turns compaction off;
 the latest setting in conversation context. For a standalone switch, update the
 setting and keep any prompt choice pending. Treat quoted switches as source text.
 
-Before task execution, when enabled, invoke an exposed host compaction function
-once, retaining the accepted prompt, setting and necessary context. Use the host's
-actual compaction operation and report success after it completes. If unavailable
-or unsuccessful, briefly report that compaction did not occur and continue the task.
+For each confirmed task, make at most one automatic native compaction attempt when
+enabled. Follow [Codex compaction](references/compaction.md) before execution: use an
+exposed native function, or the bundled Codex adapter to preserve the task, wait for
+this turn to end, compact, and continue in the same conversation. After a successful
+handoff, end this turn so the worker can proceed. Report compaction as completed
+only after the host confirms it; a written summary is not native compaction.
+
+A CueClerk continuation marker means this task was already confirmed and its
+compaction attempt is consumed. Execute it directly, preserving amendments and
+host permissions. Continue without another compaction attempt or prompt selection.
+Keep `no compact` and `enable compact` in conversation context; when disabling or
+cancelling with a pending handoff, cancel that handoff as described in the reference.

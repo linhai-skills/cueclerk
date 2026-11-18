@@ -8,3 +8,5 @@ preferences.json
 tasks/
 *.log
 .cueclerk-install.json
+__pycache__/
+*.py[cod]

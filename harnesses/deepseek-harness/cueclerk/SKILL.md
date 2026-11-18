@@ -69,7 +69,14 @@ Default to enabled in each new conversation. `no compact` turns compaction off;
 the latest setting in conversation context. For a standalone switch, update the
 setting and keep any prompt choice pending. Treat quoted switches as source text.
 
-Before task execution, when enabled, invoke an exposed host compaction function
-once, retaining the accepted prompt, setting and necessary context. Use the host's
-actual compaction operation and report success after it completes. If unavailable
-or unsuccessful, briefly report that compaction did not occur and continue the task.
+For each confirmed task, make at most one automatic compaction attempt when enabled,
+retaining the accepted prompt, preference and necessary context. Use the current
+platform's exposed native compaction interface and report success only after it
+completes. If unavailable or unsuccessful, say that compaction did not occur and
+continue; if completion is uncertain, say it was not confirmed. A written summary
+is context preservation, not native compaction. Other platforms use their own
+interfaces, never Codex App Server endpoints.
+
+Keep the task's compaction-attempt marker through continuation. Continue an accepted
+task directly, preserving its amendments and permissions; its continuation consumes
+no further compaction attempt and needs no new prompt selection or confirmation.
