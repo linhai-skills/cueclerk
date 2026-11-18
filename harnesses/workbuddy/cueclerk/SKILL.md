@@ -41,7 +41,7 @@ show the menu once and wait for an explicit reply to the current options. Keep t
 choice pending after a default highlight, dismissal, timeout or stale-menu reply.
 
 On first use, explain briefly: select or type a number to execute; add edits for
-further refinement; say "Execute my latest prompt" to proceed with the latest request;
+further refinement; say "Skip refinement" to execute the current request as given;
 `no compact` turns proactive compaction off for this conversation. On later turns,
 focus on the current choice or result. Include internal rule explanations when
 required by the host.
@@ -55,7 +55,8 @@ options also authorizes execution.
 
 Edits alone produce a revised prompt. A choice with precise edits executes with
 those edits; when review is requested, present the revision for review first.
-Requests to execute the latest prompt or continue a selected task proceed directly.
+Requests to skip refinement execute the current request as given. Continue selected
+tasks directly.
 Cancel/stop ends the workflow.
 
 Keep the accepted prompt and amendments in context and follow the host's execution

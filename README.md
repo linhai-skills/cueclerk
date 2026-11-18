@@ -77,8 +77,8 @@ limited to packaging, discovery metadata and installation. Only Codex includes
 
 ## Use and preferences
 
-Choose an option, type its number, or add edits. Say "Execute my latest prompt"
-to skip more refinement. `no compact` disables compaction for the current conversation;
+Choose an option, type its number, or add edits. Say "Skip refinement"
+to execute your current request as given. `no compact` disables compaction for the current conversation;
 `enable compact` re-enables it. New conversations default to enabled. A switch alone
 does not choose a prompt. `cancel` stops the workflow.
 Compaction requires an exposed host function; unavailable compaction does not block
