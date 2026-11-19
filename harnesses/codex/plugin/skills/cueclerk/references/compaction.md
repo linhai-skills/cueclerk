@@ -139,8 +139,15 @@ fall back to an actual host tool or continue without compaction. This package do
 not make every Codex client expose that capability.
 
 Event handling, duplicate prevention, cancellation and error paths are tested with
-simulated RPC. Live model compaction and automatic model continuation have not
-been exercised for this implementation. The API has no atomic "start only if the
+simulated RPC. On 2026-11-19, a live Linux Codex desktop session with CLI 0.167.0
+verified the full flow: the user selected a calculation using a native choice,
+the confirming turn ended, one `contextCompaction` item started and completed,
+its turn completed successfully, and one automatic continuation executed the
+accepted task in the same thread. No repeated confirmation, second compaction or
+test-recovery continuation occurred. This is one verified host configuration;
+other clients and platforms remain unverified for this live flow.
+
+The API has no atomic "start only if the
 latest turn is still X" operation: the worker checks for new input before sending,
 but a simultaneous user action can still race the final request. Use the latest
 user input as authoritative if that happens.

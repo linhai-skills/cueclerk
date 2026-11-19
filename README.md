@@ -25,10 +25,12 @@ No GitHub CLI is required. Extract to a permanent folder before installing a loc
 | DeepSeek Harness | `cueclerk-deepseek-harness-1.0.0.zip` | Extract `cueclerk` into `~/.dsh/skills/` (or `$DSH_HOME/skills/`). |
 | WorkBuddy | `cueclerk-workbuddy-1.0.0.zip` | Open **Skills → Add Skill → Upload Skill** and select the ZIP. |
 
-**Validation scope:** checks cover skill format, packages, local Codex installation,
-simulated compaction/continuation events, and read-only App Server access on Codex
-CLI 0.167.0. Live model compaction, automatic model continuation and behavior across
-clients have not been tested. Native selection controls depend on the host.
+**Validation scope:** checks cover skill format, packages, local Codex installation
+and simulated compaction/continuation events. A live test on a Linux Codex desktop
+host with CLI 0.167.0 verified native selection, one completed native compaction
+and automatic execution in the same thread, without repeated confirmation or
+compaction. Other clients and platforms have not had this live flow verified.
+Native selection controls depend on the host.
 
 **Codex automatic compaction:** the Codex package includes an adapter for an existing
 App Server Unix control socket. It needs Python 3.10+ on the Codex host and permission

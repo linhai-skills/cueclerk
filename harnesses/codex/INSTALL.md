@@ -39,8 +39,10 @@ No server or runtime is installed automatically. If the interface is unavailable
 CueClerk reports that compaction did not occur and continues the task. A generated
 summary is not treated as native compaction.
 
-Simulated protocol checks and read-only access were verified with Codex CLI 0.167.0;
-live model compaction and automatic model continuation have not been tested.
+Simulated protocol checks pass. A live test on a Linux Codex desktop host with
+CLI 0.167.0 verified native task selection, one completed native compaction and
+automatic execution in the same thread, without repeated confirmation or compaction.
+This verifies that host configuration, not every Codex client or platform.
 See [compaction requirements and diagnostics](plugin/skills/cueclerk/references/compaction.md).
 
 Reference: [OpenAI plugin packaging](https://developers.openai.com/plugins/build/plugins).
