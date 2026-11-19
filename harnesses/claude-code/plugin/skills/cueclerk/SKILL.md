@@ -36,9 +36,11 @@ selector for short prompts, even a single option. Use numbered text for long con
 or when controls cannot display the complete prompts or accept the actual option count.
 Show complete prompts and support typed numbers and free-text edits.
 
-For async selectors, put the introduction and first-use guidance in the question,
-show the menu once and wait for an explicit reply to the current options. Keep the
+Put the introduction and first-use guidance in the native question itself, show
+the menu once and map its returned label or ID to the complete prompt. Keep the
 choice pending after a default highlight, dismissal, timeout or stale-menu reply.
+When a control cannot render the actual option count, use numbered text rather
+than padding the menu. A valid answer authorizes the selected prompt immediately.
 
 On first use, explain briefly: select or type a number to execute; add edits for
 further refinement; say "Skip refinement" to execute the current request as given;
@@ -69,6 +71,11 @@ Default to enabled in each new conversation. `no compact` turns compaction off;
 the latest setting in conversation context. For a standalone switch, update the
 setting and keep any prompt choice pending. Treat quoted switches as source text.
 
+These switches control CueClerk's proactive attempt, leaving the host's independent
+automatic context management and global settings unchanged. Before compaction,
+retain the selected prompt, amendments, language, current preference and consumed
+attempt in conversation context so continuation can execute without reconfirmation.
+
 For each confirmed task, make at most one automatic compaction attempt when enabled,
 retaining the accepted prompt, preference and necessary context. Use the current
 platform's exposed native compaction interface and report success only after it
@@ -77,11 +84,36 @@ continue; if completion is uncertain, say it was not confirmed. A written summar
 is context preservation, not native compaction. Other platforms use their own
 interfaces, never Codex App Server endpoints.
 
-This portable skill contains no Codex socket adapter. On Codex, distinguish this
-installation limit from host capability: if no native tool is exposed, explain
-that compaction was skipped with the portable install. The complete Codex package
-supports an adapter for compatible hosts, including standalone skill installs.
+Check the current host's callable tools and any installed platform adapter before
+choosing a fallback. A user-typed slash command or a compaction lifecycle hook
+alone does not provide an assistant-callable operation. Report the observed reason
+briefly once per task: missing callable interface, missing adapter, denied access,
+failure, or unconfirmed completion. Use normal host approval for restricted access;
+respect refusal. Resolve an uncertain in-flight operation before resuming execution
+so a queued continuation cannot duplicate the task. A confirmed skip consumes this
+task's attempt; a new task may check availability again.
 
 Keep the task's compaction-attempt marker through continuation. Continue an accepted
 task directly, preserving its amendments and permissions; its continuation consumes
 no further compaction attempt and needs no new prompt selection or confirmation.
+
+## Claude Code integration
+
+Use `AskUserQuestion` when it is exposed and the current schema accepts the real
+option count. Put each title in its label and the complete prompt in its description.
+For a single prompt that the schema cannot represent, use numbered text. Interpret
+the submitted answer or custom edits using the shared workflow; an unattended
+auto-continue notification leaves the choice pending unless the user delegated it.
+
+Claude Code's built-in `/compact` is a user command and is not callable through
+the `Skill` tool. `PreCompact` and `PostCompact` hooks observe compaction; their
+presence alone does not give this skill a way to initiate it. This package includes
+no automatic compaction adapter. If this session exposes an authorized native tool
+or an installed same-session adapter, use its documented completion signal once.
+Otherwise report that this installation has no callable compaction interface and
+execute the confirmed task. Keep manual `/compact` optional; spawning another
+Claude process or sending text to a terminal is not this session's native interface.
+
+References: [tools](https://code.claude.com/docs/en/tools-reference),
+[skill invocation limits](https://code.claude.com/docs/en/skills#restrict-claudes-skill-access),
+[hooks](https://code.claude.com/docs/en/hooks).

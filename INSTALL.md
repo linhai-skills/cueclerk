@@ -26,7 +26,10 @@ ask only when these cannot be inferred. Do not install into every platform by de
    installation does not update this one. Run the bundled read-only `probe` under
    the host's permission rules and report its result; the tool list alone is not
    an availability check.
-   Other packages need no Python. Do not invoke the skill merely to test installation.
+   For other platforms, verify the platform integration section in the loaded skill
+   and report available question/compaction capabilities separately from installation.
+   Check for project or custom copies shadowing the updated user copy. Other packages
+   need no Python. Do not invoke the skill merely to test installation.
 6. Report the destination, method, backup and verification result. Request a new
    session if needed. If a UI step requires user action, name that step without
    claiming it completed. Package validation does not prove live client behavior.
@@ -37,9 +40,10 @@ The released ZIPs already include it. Preferences apply to the current conversat
 
 ## Maintaining platform copies
 
-Edit common rules in `skills/cueclerk`, then synchronize Claude Code, DeepSeek
-Harness and WorkBuddy. Merge shared workflow edits into the Codex SKILL.md while
-preserving its dedicated compaction section, reference and both scripts. Keep
+Edit common rules in `skills/cueclerk`, then merge them into each platform skill.
+Preserve the Claude Code, DeepSeek Harness and WorkBuddy integration sections;
+the portable-only Codex installation note belongs only in the portable skill.
+Preserve Codex's dedicated compaction section, reference and both scripts. Keep
 Codex App Server calls inside the Codex adapter; other platforms use their own
 interfaces. Copy agents/openai.yaml only to Codex.
 

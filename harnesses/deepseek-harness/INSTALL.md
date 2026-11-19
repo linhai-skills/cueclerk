@@ -15,4 +15,24 @@ Respect any custom skill roots configured by the user. A directory copy verifies
 installation layout, not model behavior. Native selection/compaction is conditional
 on the tools the host exposes.
 
-Reference: [DeepSeek Harness skill discovery](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/skills.md).
+## Verify and update
+
+Back up the active skill outside discovery roots, then replace the complete folder
+on the host running the session. Check the skill's reported source: project
+`.dsh/skills` and `.agents/skills`, or custom roots, may override the user install.
+Reload CueClerk and verify that it includes **DeepSeek Harness integration**.
+
+The native `ask_user_question` control is used when exposed. A timed `pending`
+result leaves the choice open; a later answer selects the task without another menu.
+The host has a native compaction service and a human `/compact` command, but this
+filesystem skill adds no callable service adapter. Without an exposed operation,
+CueClerk reports the skip and executes. A queued compaction or a result saying
+there is no compactable history is not a completed compaction.
+
+Validation: checked against official source and package layout; no live DeepSeek
+Harness conversation was tested. On your client, try a short choice and a free-text
+revision, verifying that each accepted task executes once.
+
+References: [skill discovery](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/skills.md),
+[user questions](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/user-questions.md),
+[compaction](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/compaction.md).

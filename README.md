@@ -32,6 +32,19 @@ and automatic execution in the same thread, without repeated confirmation or
 compaction. Other clients and platforms have not had this live flow verified.
 Native selection controls depend on the host.
 
+| Platform | Native choices | CueClerk-triggered compaction |
+| --- | --- | --- |
+| Codex | Host question control when available | Bundled socket adapter on compatible hosts; live flow verified on one Linux host. |
+| Claude Code | `AskUserQuestion` when its schema fits | No bundled adapter; `/compact` cannot be invoked through `Skill`. |
+| DeepSeek Harness | Exposed `ask_user_question`; pending replies remain open | Native host service exists, but this skill bundle adds no callable adapter. |
+| WorkBuddy | Exposed question control, otherwise text | No bundled adapter; a callable API was not established by the reviewed public docs. |
+
+For the last three, CueClerk uses a permitted native operation if the current host
+exposes one; otherwise it explains the observed limit and executes without proactive
+compaction. Their integration rules were checked against documentation/source, not
+live authenticated conversations. Each platform's install guide explains updates
+and verification. These are capability limits, not claims that the host cannot compact.
+
 **Codex automatic compaction:** the Codex package includes an adapter for an existing
 App Server Unix control socket. It needs Python 3.10+ on the Codex host and permission
 to access that socket. Clients without this interface continue without compaction
@@ -61,8 +74,10 @@ Prompt refinement itself requires no Python. Only the Codex compaction adapter u
 **Skill-only alternative:** for Codex, copy the complete `plugin/skills/cueclerk`
 folder from `cueclerk-codex-1.0.0.zip` plus `plugin/LICENSE` into
 `~/.agents/skills/cueclerk`, then invoke `$cueclerk`. This includes the compaction
-adapter. For Claude Code, extract `cueclerk-1.0.0.zip` into `~/.claude/skills/`
-and invoke `/cueclerk`. The portable ZIP contains no Codex socket adapter.
+adapter. For Claude Code, copy the same `plugin/skills/cueclerk` folder and license
+from the Claude Code ZIP into `~/.claude/skills/cueclerk`, then invoke `/cueclerk`.
+The portable `cueclerk-1.0.0.zip` provides generic rules, without platform integration
+sections or the Codex socket adapter.
 Install on each host where you run Codex; updating one machine does not update
 another SSH host. Existing `~/.codex/skills/cueclerk` installs can be upgraded
 in place using the same complete Codex skill folder.
@@ -85,10 +100,10 @@ It will use the matching platform guide and report what was actually installed.
 | [harnesses/workbuddy](harnesses/workbuddy/INSTALL.md) | Uploadable skill bundle |
 
 The last two use documented skill loading, not an invented plugin manifest.
-Platform-neutral rules live in `skills/cueclerk` and are copied to Claude Code,
-DeepSeek Harness and WorkBuddy. The Codex skill preserves the shared refinement
-workflow and adds its own compaction reference and Python adapter. Keep that
-platform-specific section when updating shared rules. The root license is added
+Platform-neutral rules live in `skills/cueclerk`. Each platform preserves that
+workflow and adds its own integration rules; Codex also includes a compaction
+reference and Python adapter. Preserve those sections when merging shared edits.
+The root license is added
 to each release package.
 
 ## Use and preferences
@@ -97,6 +112,8 @@ Choose an option, type its number, or add edits. Say "Skip refinement"
 to execute your current request as given. `no compact` disables compaction for the current conversation;
 `enable compact` re-enables it. New conversations default to enabled. A switch alone
 does not choose a prompt. `cancel` stops the workflow.
+These switches affect CueClerk's proactive attempt, not the host's automatic context
+management or global settings.
 Each confirmed task gets at most one automatic compaction attempt. Codex can queue
 compaction after the confirming turn ends and continue the task in the same thread.
 The continuation skips further compaction and prompt confirmation. Other platforms

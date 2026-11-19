@@ -36,9 +36,11 @@ selector for short prompts, even a single option. Use numbered text for long con
 or when controls cannot display the complete prompts or accept the actual option count.
 Show complete prompts and support typed numbers and free-text edits.
 
-For async selectors, put the introduction and first-use guidance in the question,
-show the menu once and wait for an explicit reply to the current options. Keep the
+Put the introduction and first-use guidance in the native question itself, show
+the menu once and map its returned label or ID to the complete prompt. Keep the
 choice pending after a default highlight, dismissal, timeout or stale-menu reply.
+When a control cannot render the actual option count, use numbered text rather
+than padding the menu. A valid answer authorizes the selected prompt immediately.
 
 On first use, explain briefly: select or type a number to execute; add edits for
 further refinement; say "Skip refinement" to execute the current request as given;
@@ -68,6 +70,11 @@ Default to enabled in each new conversation. `no compact` turns compaction off;
 `enable compact` turns it on. Acknowledge changes as conversation-only and keep
 the latest setting in conversation context. For a standalone switch, update the
 setting and keep any prompt choice pending. Treat quoted switches as source text.
+
+These switches control CueClerk's proactive attempt, leaving the host's independent
+automatic context management and global settings unchanged. Before compaction,
+retain the selected prompt, amendments, language, current preference and consumed
+attempt in conversation context so continuation can execute without reconfirmation.
 
 For each confirmed task with compaction enabled and its attempt unconsumed, read
 [Codex compaction](references/compaction.md) before execution. Use an exposed native
