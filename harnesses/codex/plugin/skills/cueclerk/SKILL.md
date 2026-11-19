@@ -69,12 +69,16 @@ Default to enabled in each new conversation. `no compact` turns compaction off;
 the latest setting in conversation context. For a standalone switch, update the
 setting and keep any prompt choice pending. Treat quoted switches as source text.
 
-For each confirmed task, make at most one automatic native compaction attempt when
-enabled. Follow [Codex compaction](references/compaction.md) before execution: use an
-exposed native function, or the bundled Codex adapter to preserve the task, wait for
-this turn to end, compact, and continue in the same conversation. After a successful
-handoff, end this turn so the worker can proceed. Report compaction as completed
-only after the host confirms it; a written summary is not native compaction.
+For each confirmed task with compaction enabled and its attempt unconsumed, read
+[Codex compaction](references/compaction.md) before execution. Use an exposed native
+function, or run `python3 <this-skill-directory>/scripts/compact.py probe` and follow
+its result to schedule the bundled adapter. The adapter is available through shell
+execution even when the tool list has no compaction function. Base any fallback on
+the actual probe result or a concrete missing prerequisite, and briefly state that
+reason. Preserve the task, wait for this turn to end, compact, and continue in the
+same conversation. After a successful handoff, end this turn so the worker can
+proceed. Each task gets at most one attempt. Report completion only after the host
+confirms it; a written summary is not native compaction.
 
 A socket `permission_required` result calls for the host's normal approval flow,
 as described in the reference. Distinguish a sandbox restriction from an unavailable

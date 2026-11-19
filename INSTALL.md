@@ -21,6 +21,11 @@ ask only when these cannot be inferred. Do not install into every platform by de
 5. Verify the installed manifest/skill files and native plugin listing where available.
    For Codex, include its complete `references/` and `scripts/` directories and
    report whether Python 3.10+ and the existing App Server socket are available.
+   Use the Codex package for standalone installs too when automatic compaction is
+   wanted. Check the actual host and loaded skill path; another machine's successful
+   installation does not update this one. Run the bundled read-only `probe` under
+   the host's permission rules and report its result; the tool list alone is not
+   an availability check.
    Other packages need no Python. Do not invoke the skill merely to test installation.
 6. Report the destination, method, backup and verification result. Request a new
    session if needed. If a UI step requires user action, name that step without

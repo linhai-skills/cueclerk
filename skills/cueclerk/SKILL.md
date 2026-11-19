@@ -77,6 +77,11 @@ continue; if completion is uncertain, say it was not confirmed. A written summar
 is context preservation, not native compaction. Other platforms use their own
 interfaces, never Codex App Server endpoints.
 
+This portable skill contains no Codex socket adapter. On Codex, distinguish this
+installation limit from host capability: if no native tool is exposed, explain
+that compaction was skipped with the portable install. The complete Codex package
+supports an adapter for compatible hosts, including standalone skill installs.
+
 Keep the task's compaction-attempt marker through continuation. Continue an accepted
 task directly, preserving its amendments and permissions; its continuation consumes
 no further compaction attempt and needs no new prompt selection or confirmation.

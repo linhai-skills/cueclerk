@@ -58,11 +58,14 @@ In Codex, select the CueClerk plugin/skill; in DeepSeek Harness or WorkBuddy, as
 "Use CueClerk to refine this request: ...". `~` means your user home directory.
 Prompt refinement itself requires no Python. Only the Codex compaction adapter uses it.
 
-**Skill-only alternative:** extract `cueclerk-1.0.0.zip` into `~/.agents/skills/`
-for Codex or `~/.claude/skills/` for Claude Code. Invoke `$cueclerk` or `/cueclerk`.
-This portable ZIP uses host-exposed compaction tools only. For Codex's socket adapter
-without plugin installation, copy the complete `plugin/skills/cueclerk` folder from
-the Codex ZIP plus its license into `~/.agents/skills/cueclerk` instead.
+**Skill-only alternative:** for Codex, copy the complete `plugin/skills/cueclerk`
+folder from `cueclerk-codex-1.0.0.zip` plus `plugin/LICENSE` into
+`~/.agents/skills/cueclerk`, then invoke `$cueclerk`. This includes the compaction
+adapter. For Claude Code, extract `cueclerk-1.0.0.zip` into `~/.claude/skills/`
+and invoke `/cueclerk`. The portable ZIP contains no Codex socket adapter.
+Install on each host where you run Codex; updating one machine does not update
+another SSH host. Existing `~/.codex/skills/cueclerk` installs can be upgraded
+in place using the same complete Codex skill folder.
 Use either the plugin or standalone skill to avoid duplicate entries. Back up the
 old skill outside discovery directories before replacing it.
 

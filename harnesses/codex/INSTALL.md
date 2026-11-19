@@ -22,6 +22,15 @@ Copy the entire skill folder, including `references/compaction.md`,
 `scripts/compact.py` and `scripts/codex_rpc.py`. Avoid keeping a standalone copy
 active alongside the plugin.
 
+For automatic compaction, use `cueclerk-codex-1.0.0.zip` for both plugin and
+standalone installs. The portable `cueclerk-1.0.0.zip` contains no socket adapter.
+Install on the host running the conversation: updating one machine leaves other
+SSH hosts unchanged. When upgrading an existing `~/.codex/skills/cueclerk` install,
+back it up outside skill-discovery directories and replace that complete folder
+with `plugin/skills/cueclerk` plus the license, keeping only one active copy.
+Reload the installed SKILL.md and its compaction reference in an existing
+conversation; start a new session if the client still uses the previous skill.
+
 ## Automatic compaction
 
 The adapter uses Python 3.10+ and the existing Codex App Server Unix control socket.
