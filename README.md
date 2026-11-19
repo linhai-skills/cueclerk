@@ -34,6 +34,8 @@ clients have not been tested. Native selection controls depend on the host.
 App Server Unix control socket. It needs Python 3.10+ on the Codex host and permission
 to access that socket. Clients without this interface continue without compaction
 unless they expose a native compaction tool. See the [Codex guide](harnesses/codex/INSTALL.md).
+Sandbox socket restrictions use the host's normal approval flow first; denied or
+unavailable approval falls back to execution without compaction.
 
 **Codex** — replace the path with your extracted folder:
 

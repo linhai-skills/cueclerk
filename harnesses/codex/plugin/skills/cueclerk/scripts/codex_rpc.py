@@ -24,6 +24,10 @@ class RpcError(RuntimeError):
         super().__init__(f"RPC {code}: {message}")
 
 
+class SocketPermissionError(PermissionError):
+    """Connection setup was blocked before any thread mutation was possible."""
+
+
 def default_socket():
     home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
     return Path(os.environ.get("CUECLERK_CODEX_SOCKET", home / "app-server-control/app-server-control.sock"))
@@ -33,6 +37,15 @@ class CodexRPC:
     MAX_MESSAGE = 32 * 1024 * 1024
 
     def __init__(self, path=None, timeout=10):
+        try:
+            self._connect(path, timeout)
+        except PermissionError as error:
+            raise SocketPermissionError(
+                "Access to the existing Codex control socket requires host permission; "
+                "no compaction or continuation was requested"
+            ) from error
+
+    def _connect(self, path, timeout):
         if os.name != "posix":
             raise RuntimeError("This adapter requires a Unix-like Codex host")
         self.path = Path(path or default_socket())

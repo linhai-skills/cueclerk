@@ -14,7 +14,7 @@ import subprocess
 import sys
 import time
 
-from codex_rpc import CodexRPC, RpcError, default_socket
+from codex_rpc import CodexRPC, RpcError, SocketPermissionError, default_socket
 
 
 PENDING = {"starting", "waiting", "compacting", "continuing"}
@@ -61,6 +61,14 @@ def summary(record):
     return {key: record.get(key) for key in (
         "task_id", "status", "compaction", "resume_turn_id", "reason"
     )}
+
+
+def error_result(error):
+    if isinstance(error, SocketPermissionError):
+        return {"status": "permission_required", "compaction": "not_requested",
+                "reason": str(error), "action": "request_host_approval"}
+    return {"status": "unavailable", "compaction": "not_performed",
+            "reason": str(error), "action": "execute_current_task"}
 
 
 def available(thread):
@@ -344,6 +352,5 @@ if __name__ == "__main__":
     try:
         main()
     except (OSError, RuntimeError, ValueError, KeyError) as error:
-        print(json.dumps({"status": "unavailable", "compaction": "not_performed",
-                          "reason": str(error), "action": "execute_current_task"}))
+        print(json.dumps(error_result(error)))
         sys.exit(1)

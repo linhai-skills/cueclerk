@@ -32,6 +32,9 @@ thread. Each task consumes at most one attempt. Session-level `no compact` and
 
 The default socket is under `$CODEX_HOME/app-server-control/` (usually `~/.codex/`).
 It must belong to the running host and be accessible under normal host permissions.
+When a sandbox blocks the socket, CueClerk requests normal host approval for the
+probe and, if available, the handoff operation. A successful read-only probe does
+not grant access to later sandboxed commands. Denied approval is respected.
 No server or runtime is installed automatically. If the interface is unavailable,
 CueClerk reports that compaction did not occur and continues the task. A generated
 summary is not treated as native compaction.

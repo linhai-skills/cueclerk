@@ -76,6 +76,10 @@ this turn to end, compact, and continue in the same conversation. After a succes
 handoff, end this turn so the worker can proceed. Report compaction as completed
 only after the host confirms it; a written summary is not native compaction.
 
+A socket `permission_required` result calls for the host's normal approval flow,
+as described in the reference. Distinguish a sandbox restriction from an unavailable
+interface; continue without compaction if approval is denied or unavailable.
+
 A CueClerk continuation marker means this task was already confirmed and its
 compaction attempt is consumed. Execute it directly, preserving amendments and
 host permissions. Continue without another compaction attempt or prompt selection.

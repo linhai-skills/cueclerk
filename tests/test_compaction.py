@@ -15,7 +15,7 @@ from unittest.mock import patch
 SCRIPTS = Path(__file__).resolve().parents[1] / "harnesses/codex/plugin/skills/cueclerk/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import compact
-from codex_rpc import CodexRPC, RpcError
+from codex_rpc import CodexRPC, RpcError, SocketPermissionError
 
 
 def event(method, turn_id="compact-turn", thread="thread", **extra):
@@ -149,6 +149,25 @@ class HandoffTests(unittest.TestCase):
         with patch.object(compact, "CodexRPC") as factory:
             self.assertEqual(compact.schedule("thread", {"compaction_enabled": False})["status"], "disabled")
             factory.assert_not_called()
+
+    def test_socket_permission_is_distinct_and_handoff_is_not_started(self):
+        with patch.object(Path, "stat", side_effect=PermissionError("sandbox blocked socket")):
+            with self.assertRaises(SocketPermissionError) as caught:
+                CodexRPC("/fake/socket")
+        self.assertEqual(compact.error_result(caught.exception)["action"], "request_host_approval")
+        with patch.object(compact, "CodexRPC", side_effect=caught.exception), \
+             patch.object(compact, "save") as persist, \
+             patch.object(compact.subprocess, "Popen") as spawn:
+            with self.assertRaises(SocketPermissionError):
+                compact.schedule("thread", {"prompt": "confirmed task"})
+            persist.assert_not_called()
+            spawn.assert_not_called()
+
+    def test_missing_socket_and_unrelated_permission_errors_do_not_escalate(self):
+        for error in [FileNotFoundError("no socket"), PermissionError("state directory denied"),
+                      RpcError(-32000, "operation denied")]:
+            with self.subTest(error=type(error).__name__):
+                self.assertEqual(compact.error_result(error)["action"], "execute_current_task")
 
     def test_consumed_receipt_and_continuation_prevent_rescheduling(self):
         with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {"XDG_STATE_HOME": directory}):

@@ -35,6 +35,30 @@ Resolve the script relative to this installed skill, not the project directory.
 Run `python3 /absolute/path/to/cueclerk/scripts/compact.py probe` for a read-only
 availability check. This checks connectivity and thread state, not model behavior.
 
+### Socket permission errors
+
+`permission_required` means connection setup was blocked before requesting any
+compaction or continuation. It is not evidence that the native interface is missing.
+When the host permits an approval flow, request it once for the read-only probe.
+With `exec_command`, this means using `sandbox_permissions: "require_escalated"`
+and explaining that the command only checks the existing Codex socket. Preserve
+`CODEX_THREAD_ID` so the probe checks this conversation. After approval, retry the
+probe; connection probes do not consume the task's compaction attempt.
+
+When the probe succeeds, run `schedule` through the normal host authorization
+mechanism for that operation as well. Describe its effects: temporary task storage,
+one native compaction and one continuation of the confirmed task in the same thread.
+Read-only probe approval alone is not authorization for these later mutations.
+The worker inherits the authorized command's access; a successful probe does not
+change permissions for subsequent sandboxed commands.
+
+If approval is refused, the approval mechanism is unavailable, or the approved
+probe still fails, report that compaction did not occur and continue the task.
+Honor an approval refusal; leave socket permissions and sandbox configuration
+unchanged. Uncertain or already-sent mutations remain subject to the no-retry rule.
+
+### Save and schedule
+
 Before queuing, preserve the accepted prompt, amendments, conversation language,
 deliverable language, relevant file paths, and any necessary facts. Include only
 context needed for the task; keep credentials and unrelated conversation out.
@@ -60,6 +84,9 @@ duplicate scheduling and automatic continuation turns cannot queue it again.
   the worker in a tool call: it is waiting for this turn to end.
 - `disabled` or `unavailable`: report that compaction did not occur when relevant,
   and execute in the current turn.
+- `permission_required`: follow the socket approval flow above before deciding
+  whether the native interface is unavailable. Avoid treating it as a completed
+  or failed compaction attempt.
 - `pending` or `already_handled`: inspect `status`. Continue only if no worker or
   continuation owns the task; a consumed attempt is never scheduled again.
 - `startup_failed` / `failed`: the worker did not queue compaction successfully;
